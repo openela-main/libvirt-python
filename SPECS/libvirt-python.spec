@@ -14,13 +14,13 @@
 
 Summary: The libvirt virtualization API python3 binding
 Name: libvirt-python
-Version: 9.3.0
+Version: 10.0.0
 Release: 1%{?dist}%{?extra_release}
 Source0: https://libvirt.org/sources/python/%{name}-%{version}.tar.gz
 Url: https://libvirt.org
 License: LGPL-2.1-or-later
 BuildRequires: git
-BuildRequires: libvirt-devel >= 9.3.0-2
+BuildRequires: libvirt-devel >= 10.0.0-1
 BuildRequires: python3-devel
 BuildRequires: python3-pytest
 BuildRequires: python3-lxml
@@ -76,10 +76,10 @@ exit 1
 %py3_install
 
 %check
-%{__python3} setup.py test
+%pytest
 
 %files -n python3-libvirt
-%doc ChangeLog AUTHORS README COPYING COPYING.LESSER examples/
+%doc ChangeLog AUTHORS README COPYING examples/
 %{python3_sitearch}/libvirt.py*
 %{python3_sitearch}/libvirtaio.py*
 %{python3_sitearch}/libvirt_qemu.py*
@@ -92,6 +92,9 @@ exit 1
 %{python3_sitearch}/*egg-info
 
 %changelog
+* Thu Feb  8 2024 Jiri Denemark <jdenemar@redhat.com> - 10.0.0-1
+- Rebased to libvirt-python-10.0.0 (RHEL-24822)
+
 * Wed May 17 2023 Jiri Denemark <jdenemar@redhat.com> - 9.3.0-1
 - Rebased to libvirt-python-9.3.0 (rhbz#2175786)
 
