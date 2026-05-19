@@ -1,0 +1,43 @@
+From 71db91de579b9c79bd3162b8499bb6d3e95073f3 Mon Sep 17 00:00:00 2001
+Message-ID: <71db91de579b9c79bd3162b8499bb6d3e95073f3.1769616469.git.jdenemar@redhat.com>
+From: Peter Krempa <pkrempa@redhat.com>
+Date: Mon, 19 Jan 2026 08:36:21 +0100
+Subject: [PATCH] virDomainSaveParams: Add missing typed parameter conversion
+ hints
+
+Add the missing hints for:
+ - VIR_DOMAIN_SAVE_PARAM_IMAGE_FORMAT
+ - VIR_DOMAIN_SAVE_PARAM_PARALLEL_CHANNELS
+
+The latter of the above is important as the default conversion of
+numbers is to 'ulong' if a hint is missing but the parallel channel
+counts is accepted as 'int' by libvirt.
+
+Signed-off-by: Peter Krempa <pkrempa@redhat.com>
+(cherry picked from commit 7f92321ff1045097b9079d05350d6d2ce92a183f)
+
+https://issues.redhat.com/browse/RHEL-142127 [rhel-10.2]
+https://issues.redhat.com/browse/RHEL-144009 [rhel-9.8]
+---
+ libvirt-override.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/libvirt-override.c b/libvirt-override.c
+index 866b8a7..b3e2d8d 100644
+--- a/libvirt-override.c
++++ b/libvirt-override.c
+@@ -10842,6 +10842,12 @@ libvirt_virDomainSetLaunchSecurityState(PyObject *self ATTRIBUTE_UNUSED,
+ static virPyTypedParamsHint virPyDomainSaveParams[] = {
+     { VIR_DOMAIN_SAVE_PARAM_FILE, VIR_TYPED_PARAM_STRING },
+     { VIR_DOMAIN_SAVE_PARAM_DXML, VIR_TYPED_PARAM_STRING },
++#ifdef VIR_DOMAIN_SAVE_PARAM_IMAGE_FORMAT
++    { VIR_DOMAIN_SAVE_PARAM_IMAGE_FORMAT, VIR_TYPED_PARAM_STRING },
++#endif
++#ifdef VIR_DOMAIN_SAVE_PARAM_PARALLEL_CHANNELS
++    { VIR_DOMAIN_SAVE_PARAM_PARALLEL_CHANNELS, VIR_TYPED_PARAM_INT },
++#endif
+ };
+ 
+ 
+-- 
+2.52.0
