@@ -12,15 +12,19 @@
     %define supported_platform 0
 %endif
 
+%define dist_name libvirt_python
+
 Summary: The libvirt virtualization API python3 binding
 Name: libvirt-python
-Version: 10.10.0
-Release: 1%{?dist}%{?extra_release}
-Source0: https://libvirt.org/sources/python/%{name}-%{version}.tar.gz
+Version: 11.10.0
+Release: 2%{?dist}%{?extra_release}
+Source0: https://libvirt.org/sources/python/%{dist_name}-%{version}.tar.gz
+Patch1: libvirt-python-virDomainSaveParams-Add-missing-typed-parameter-conversion-hints.patch
+
 Url: https://libvirt.org
 License: LGPL-2.1-or-later
 BuildRequires: git
-BuildRequires: libvirt-devel >= 10.10.0-2
+BuildRequires: libvirt-devel >= 11.10.0-2
 BuildRequires: python3-devel
 BuildRequires: python3-pytest
 BuildRequires: python3-lxml
@@ -52,7 +56,7 @@ supplied by the libvirt library to use the virtualization capabilities
 of recent versions of Linux (and other OSes).
 
 %prep
-%autosetup -S git_am -N
+%autosetup -S git_am -N -n %{dist_name}-%{version}
 
 %autopatch
 
@@ -90,6 +94,18 @@ exit 1
 %{python3_sitearch}/*egg-info
 
 %changelog
+* Wed Jan 28 2026 Jiri Denemark <jdenemar@redhat.com> - 11.10.0-2
+- virDomainSaveParams: Add missing typed parameter conversion hints (RHEL-144009)
+
+* Mon Jan  5 2026 Jiri Denemark <jdenemar@redhat.com> - 11.10.0-1
+- Rebased to libvirt-python-11.10.0 (RHEL-118198)
+
+* Tue Nov 11 2025 Jiri Denemark <jdenemar@redhat.com> - 11.9.0-1
+- Rebased to libvirt-python-11.9.0 (RHEL-118198)
+
+* Tue Oct 21 2025 Jiri Denemark <jdenemar@redhat.com> - 11.8.0-1
+- Rebased to libvirt-python-11.8.0 (RHEL-118198)
+
 * Thu Dec 19 2024 Jiri Denemark <jdenemar@redhat.com> - 10.10.0-1
 - Rebased to libvirt-python-10.10.0 (RHEL-50576)
 
